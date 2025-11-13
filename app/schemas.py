@@ -10,7 +10,7 @@ class ImageRequest(BaseModel):
 
 class ImageData(BaseModel):
     id: str
-    urls: List[str]
+    url: str
     description: Optional[str]
     alt_description: Optional[str]
 

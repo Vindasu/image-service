@@ -11,7 +11,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify your domains
+    allow_origins=["*"],  # Specify domains when deployed
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,6 +29,7 @@ def root():
         }
     }
 
+
 @app.get("/images", response_model=ImageResponse)
 def fetch_images(
     query: str = Query(..., description="Search term (e.g., 'pizza', 'sunset')"),
@@ -40,13 +41,11 @@ def fetch_images(
     """
     
     try:
-        # Call your service function
         images_data = get_images(query, count, format)
         
         # Convert to Pydantic models
         images = [ImageData(**img) for img in images_data]
         
-        # Return response
         return ImageResponse(
             images=images,
             query=query,
@@ -55,8 +54,6 @@ def fetch_images(
         )
         
     except ValueError as e:
-        # Invalid format error
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        # Other errors
         raise HTTPException(status_code=500, detail=str(e))
