@@ -12,13 +12,22 @@ Uses HTTP as the communication pipe.
 
 **Request Method:** HTTP GET request with query parameters
 
-**Required Parameters:**
+**Required Parameter:**
 - `query` (string): Search term for images
 
 **Optional Parameters:**
 - `count` (integer): Number of images to return (1-30, default: 1)
 - `format` (string): Image size - `raw`, `full`, `regular`, `small`, `thumb` (default: `regular`)
-- `dynamic` (dictionary): Object containing 
+
+**Optional Dynamic Image Parameters** (Imgix transformations):
+- `w` (integer): Custom width in pixels
+- `h` (integer): Custom height in pixels  
+- `q` (integer): Image quality (0-100, default: 80)
+- `fit` (string): Fit mode - `crop`, `clip`, `scale`, `max`, `fill`
+- `fmt` (string): Force image format - `jpg`, `png`, `webp`, `gif`
+- `crop` (string): Crop mode - `top`, `bottom`, `left`, `right`, `faces`, `focalpoint`, `edges`, `entropy`
+
+Learn more about supported params used in Imgix here: https://unsplash.com/documentation#supported-parameters
 
 **Example Call (Python):**
 ```python
@@ -40,6 +49,24 @@ if response.status_code == 200:
     print(f"Received {len(data['images'])} images")
 else:
     print(f"Error: {response.status_code}")
+```
+
+**Example Call (Python) with Dynamic Params**
+```python
+# Get 1920x1080 hero image, cropped to faces if present
+response = requests.get(
+    "http://localhost:8000/images",
+    params={
+        "query": "team",
+        "count": 1,
+        "format": "raw",
+        "w": 1920,
+        "h": 1080,
+        "fit": "crop",
+        "crop": "faces",
+        "q": 95
+    }
+)
 ```
 
 ### How to RECEIVE Data
@@ -187,18 +214,6 @@ else:
      │                         │                           │                        
 
 ```
-
-**Diagram Explanation:**
-
-1. **Client Request**: Client program sends HTTP GET request with query parameters
-2. **Validation**: Microservice validates parameters (query, count, format)
-3. **Unsplash API Call**: Microservice requests photos from Unsplash API
-4. **Receive Photo Data**: Unsplash returns JSON with photo metadata and URLs
-5. **Build Hotlinks**: Microservice constructs image URLs with Imgix parameters for requested format
-6. **Create Response**: Microservice packages data into ImageResponse schema
-7. **Return to Client**: Client receives JSON with image data
-8. **Parse & Use**: Client extracts URLs and can display images
-9. **Image Delivery**: When client renders images, browser fetches from Imgix CDN
 
 ---
 
