@@ -34,14 +34,15 @@ def root():
 def fetch_images(
     query: str = Query(..., description="Search term (e.g., 'pizza', 'sunset')"),
     count: int = Query(1, ge=1, le=30, description="Number of images (1-30)"),
-    format: str = Query("regular", description=f"Image size: {', '.join(SIZES)}")
+    format: str = Query("regular", description=f"Image size: {', '.join(SIZES)}"),
+    dynamic: dict = Query(None, description="Dynamic image parameters")
 ):
     """
     Fetch images from Unsplash based on search query.
     """
     
     try:
-        images_data = get_images(query, count, format)
+        images_data = get_images(query, count, format, dynamic)
         
         # Convert to Pydantic models
         images = [ImageData(**img) for img in images_data]

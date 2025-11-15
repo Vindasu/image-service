@@ -7,6 +7,7 @@ class ImageRequest(BaseModel):
     query: str
     count: Optional[int] = 1
     format: Optional[str] = "regular"
+    dynamic: Optional[dict] = None
 
 class ImageData(BaseModel):
     id: str
