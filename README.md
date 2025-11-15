@@ -4,9 +4,9 @@ Stock image search service using Unsplash API. Returns image URLs based on searc
 
 ## Communication Contract
 
-### How to REQUEST Data
-
 Uses HTTP as the communication pipe.
+
+### How to REQUEST Data
 
 **Endpoint:** `GET /images`
 
@@ -58,7 +58,7 @@ else:
     }
   ],
   "query": "string",
-  "count": integer,
+  "count": "integer",
   "format": "string"
 }
 ```
@@ -202,7 +202,7 @@ else:
 
 ---
 
-## Setup
+## Setup (Local)
 
 ### Prerequisites
 - Python 3.8+
@@ -231,7 +231,7 @@ UNSPLASH_ACCESS_KEY=your_access_key_here
 pip install -r requirements.txt
 ```
 
-### 4. Run the Service
+### 4. Run the Service Locally
 ```bash
 uvicorn app.main:app --reload
 ```
