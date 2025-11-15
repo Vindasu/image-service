@@ -56,7 +56,7 @@ def fetch_images(
     if crop: dynamic["crop"] = crop
 
     try:
-        images_data = get_images(query, count, format, dynamic)
+        images_data = get_images(query, count, format, dynamic or None)
         
         # Convert to Pydantic models
         images = [ImageData(**img) for img in images_data]
