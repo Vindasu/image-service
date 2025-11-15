@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from app.schemas import ImageResponse, ImageData
@@ -35,12 +36,25 @@ def fetch_images(
     query: str = Query(..., description="Search term (e.g., 'pizza', 'sunset')"),
     count: int = Query(1, ge=1, le=30, description="Number of images (1-30)"),
     format: str = Query("regular", description=f"Image size: {', '.join(SIZES)}"),
-    dynamic: dict = Query(None, description="Dynamic image parameters")
+    w: Optional[int] = Query(None, description="Width in pixels"),
+    h: Optional[int] = Query(None, description="Height in pixels"),
+    q: Optional[int] = Query(None, ge=0, le=100, description="Quality (0-100)"),
+    fit: Optional[str] = Query(None, description="Fit type (e.g., 'crop', 'fill')"),
+    fmt: Optional[str] = Query(None, description="Image format (e.g., 'jpg', 'png')"),
+    crop: Optional[str] = Query(None, description="Valid values are top, bottom, left, right, faces, focalpoint, edges, and entropy")
 ):
     """
     Fetch images from Unsplash based on search query.
     """
-    
+    # Build the dynamic parameters 
+    dynamic = {}
+    if w: dynamic["w"] = w
+    if h: dynamic["h"] = h
+    if q: dynamic["q"] = q
+    if fit: dynamic["fit"] = fit
+    if fmt: dynamic["fm"] = fmt
+    if crop: dynamic["crop"] = crop
+
     try:
         images_data = get_images(query, count, format, dynamic)
         
