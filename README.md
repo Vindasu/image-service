@@ -229,9 +229,7 @@ else:
 2. Sign up or login
 3. Click **"New Application"**
 4. Accept terms and conditions
-5. Fill out the form:
-   - **Application name**: "Image Service Dev"
-   - **Description**: "Development testing for CS361 project"
+5. Fill out the form.
 6. Copy your **Access Key**
 
 ### 2. Configure Environment
@@ -255,50 +253,9 @@ Service will start on: `http://localhost:8000`
 
 ## API Endpoints
 
-### `GET /`
-Service information and health check
-
 ### `GET /images`
 Fetch images from Unsplash (see Communication Contract above)
-
-### `GET /health`
-Health check endpoint
 
 ### `GET /docs`
 Interactive API documentation (Swagger UI)
 
-## Testing
-```bash
-# Run all tests
-pytest
-
-# Run with verbose output
-pytest -v
-
-# Run with coverage
-pytest --cov=app tests/
-```
-
-## Project Structure
-```
-image-service/
-├── app/
-│   ├── main.py              # FastAPI app & routes
-│   ├── config.py            # Environment configuration
-│   ├── services/
-│   │   └── unsplash.py      # Unsplash API integration
-│   └── models/
-│       └── schemas.py       # Pydantic models
-├── tests/
-│   └── test_main.py         # Unit tests
-├── .env                     # API keys (gitignored)
-├── requirements.txt
-└── README.md
-```
-
-## Technologies
-
-- **FastAPI**: Modern Python web framework
-- **Unsplash API**: Stock photo provider
-- **Imgix**: Dynamic image transformations via URL parameters
-- **Pytest**: Testing framework
